@@ -1,0 +1,30 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    
+    
+    <div class="container">
+        <h2 id="title">Closed Listing </h2>
+        <div class="row">
+            {% if not listing.isActive %}
+                {% for listing in listings %}
+                    <div class="card col-sm-3" style="width: 18rem;">
+                        <div class="card-header">
+                            <p id="bid">Current bid: <span id="price">{{ listing.price.bid }}</span></p>
+                        </div>
+                        <img class="card-img-top" src="{{ listing.imageUrl }}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ listing.title}}</h5>
+                            <p class="card-text">{{ listing.description }}</p>
+                            <a href="{% url 'closedDetails' listing.id %}" class="btn btn-primary">Go to listing</a>
+                        </div>
+                    </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+Footer
+© 2023 Samson Lukman.
+Footer navigation
+Terms

@@ -1,0 +1,17 @@
+body {
+    padding: 10px;
+    background-color: rgb(5, 10, 78);
+    color: white;
+    
+}
+
+.card {
+    position:relative; top:50px;
+    margin-bottom: 50px;
+    margin-left: 20px;
+    background-color: black;
+}
+
+.list-group {
+    color: black;
+}

@@ -1,0 +1,52 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <!-- Display heading -->
+    <h2>Create New Listing</h2>
+
+    <!-- Form for creating a new listing -->
+    <form action="{% url 'create' %}" method="post">
+        <!-- Include a CSRF token to protect against cross-site request forgery attacks -->
+        {% csrf_token %}
+        <!-- Form group for the title field -->
+        <div class="form-group">
+            <label for="title">Enter title</label>
+            <input type="text" name="title" class="form-control" placeholder="Enter title">
+            
+          </div>
+        <!-- Form group for the description field -->
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" name="description" class="form-control" placeholder="description">        
+          </div>
+        <!-- Form group for the imageUrl field -->
+          <div class="form-group">
+            <label for="imageUrl">Image Url</label>
+            <input type="text" name="imageUrl" class="form-control" placeholder="imageUrl">        
+          </div>
+        <!-- Form group for the price field -->
+          <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" min="0" name="price" class="form-control" placeholder="price">        
+          </div>
+        <!-- Form group for the category field -->
+          <div class="form-group">
+           
+
+            <!-- Label for the category field -->
+            <label for="category">Choose a category:</label>
+            <!-- Dropdown menu for selecting a category -->
+            <select name="category" id="category">
+                <!-- Loop through the list of categories and display each as an option in the dropdown menu -->
+                {% for cat in category %}
+                <option value="{{cat}}">{{cat}}</option>
+                {% endfor %}
+            </select>
+
+          </div>
+          <button type="submit" class="btn btn-success">Create new Listing</button>
+          
+    </form>
+
+   
+{% endblock %}
