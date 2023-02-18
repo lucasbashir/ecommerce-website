@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-import psycopg2
+
 
 # This class extends Django's built-in AbstractUser model
 # and adds no additional functionality
