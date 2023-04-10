@@ -11,24 +11,24 @@
         <!-- Form group for the title field -->
         <div class="form-group">
             <label for="title">Enter title</label>
-            <input type="text" name="title" class="form-control" placeholder="Enter title">
+            <input type="text" name="title" class="form-control" placeholder="Enter title" required>
             
           </div>
         <!-- Form group for the description field -->
           <div class="form-group">
             <label for="description">Description</label>
-            <textarea type="text" name="description" class="form-control" placeholder="description">Describe your listing here</textarea>        
+            <textarea type="text" name="description" class="form-control" placeholder="description" required>Describe your listing here</textarea>        
           </div>
         <!-- Form group for the imageUrl field -->
         <div class="form-group">
           <label for="image">Image</label>
-          <input type="file" name="image" class="form-control" accept="image/*">
+          <input type="file" name="image" class="form-control" accept="image/*" required>
           <!-- Use the "accept" attribute to restrict file types to images -->
         </div>
         <!-- Form group for the price field -->
           <div class="form-group">
             <label for="price">Price</label>
-            <input type="number" min="0" name="price" class="form-control" placeholder="price">        
+            <input type="number" min="0" name="price" class="form-control" placeholder="price" required>        
           </div>
         <!-- Form group for the category field -->
           <div class="form-group">
