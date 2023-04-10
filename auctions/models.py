@@ -47,7 +47,7 @@ class Listing(models.Model):
     description = models.CharField(max_length=1000)
     # CharField to store the URL of the listing's image
     # with a max length of 200 characters
-    imageUrl = models.CharField(max_length=200)
+    image = models.ImageField(blank=True, null=True, upload_to='images/')
     # ForeignKey to a Bid object to store the price of the listing
     # with the option to delete the object if the bid is deleted
     price = models.ForeignKey(Bid, on_delete=models.CASCADE, blank=True, null=True, related_name="bidPrice")
@@ -61,7 +61,7 @@ class Listing(models.Model):
     # with the option to delete the object if the category is deleted
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True, related_name="category")
     # ManyToManyField to a User object to store the users who have added the listing to their watchlist
-    watchlist = models.ManyToManyField(User, blank=True, null=True, related_name="listingWatchlist")
+    watchlist = models.ManyToManyField(User, blank=True, related_name="listingWatchlist")
      
     def __str__(self):
         # Returns the title of the listing when the object is printed

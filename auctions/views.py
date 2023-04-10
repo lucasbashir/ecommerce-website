@@ -3,6 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 
 from .models import *
@@ -12,9 +13,7 @@ from .models import *
 def index(request):
     # Get all active listings
     activeListings = Listing.objects.filter(isActive=True)
-    # Get all categories
     allCategories = Category.objects.all()
-    # Render the index page with the active listings and categories
     return render(request, "auctions/index.html", {
         "listings": activeListings,
         "category": allCategories
@@ -206,17 +205,22 @@ def create_listing(request):
     Returns:
         An HTTP response with the index page rendered
     """
+    if not request.user.is_authenticated:
+        error_message = "You need to log in to access this page."
+        return HttpResponse(error_message, status=401)
+    
     # If the request method is GET, render the create listing page with a list of all categories
     if request.method == "GET":
         allCategories = Category.objects.all()
         return render(request, "auctions/create.html", {
             "category": allCategories
         })
+    
     # If the request method is POST, create a new listing with the provided data
     else:
         title = request.POST["title"]
         description = request.POST["description"]
-        imageUrl = request.POST["imageUrl"]
+        image = request.FILES["image"] # Get the uploaded image file
         price = request.POST["price"]
         category = request.POST["category"]
         currentUser = request.user
@@ -230,19 +234,19 @@ def create_listing(request):
         
         # Create a new listing with the provided data and save it to the database
         newListing = Listing(
-            title = title,
-            description = description,
-            imageUrl = imageUrl,
-            price = bid,
-            category = categoryData,
-            owner = currentUser,
+            title=title,
+            description=description,
+            image=image,
+            price=bid,
+            category=categoryData,
+            owner=currentUser,
         )
         
         newListing.save()
         
         # Redirect to the index page
         return HttpResponseRedirect(reverse(index))
-
+    
 def displayCategory(request):
     """
     Handles displaying items in a specific category.
@@ -311,15 +315,16 @@ def register(request):
             })
 
         # Attempt to create new user
+        # Create a new user account if the email is unique
         try:
-            user = User.objects.create_user(username, email, password)
-            user.save()
-        except IntegrityError:
-            return render(request, "auctions/register.html", {
-                "message": "Username already taken."
-            })
-        login(request, user)
-        return HttpResponseRedirect(reverse("index"))
+            user = User.objects.create_user(username=username, email=email, password=password)
+            login(request, user)
+            return HttpResponseRedirect(reverse("index"))
+        except IntegrityError as e:
+            if 'unique constraint' in str(e).lower() and 'username' in str(e).lower():
+                return render(request, "auctions/register.html", {
+                    "message": "Username already taken."
+                })
     else:
         return render(request, "auctions/register.html")
 
